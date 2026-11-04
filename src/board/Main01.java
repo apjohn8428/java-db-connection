@@ -321,7 +321,7 @@ public class Main01 {
 			ResultSet rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				int bnum= rs.getInt("bno"); // 필드 이름을 입력
+				int bnum= rs.getInt("bnum"); // 필드 이름을 입력
 				String btitle = rs.getString("title"); 
 				String bcontent= rs.getString("content");
 				String bwriter = rs.getString("writer");
