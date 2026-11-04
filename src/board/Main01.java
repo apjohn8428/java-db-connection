@@ -438,7 +438,7 @@ public class Main01 {
 		System.out.print("변경할 내용 입력 : ");
 		String content = sc.nextLine();
 	
-		System.out.print("수정할 게시글 번호입력: ");
+		System.out.print("변경할 게시글 번호입력: ");
 		String bno = sc.nextLine();
 		
 		String sql = "UPDATE board SET title = ?, content = ? WHERE bnum = ? and writer = ?";
