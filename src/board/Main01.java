@@ -110,7 +110,7 @@ public class Main01 {
 		System.out.print("변경할 이름 입력 : ");
 		String username = sc.nextLine();
 		
-		String sql = "UPDATE member SET password = ? WHERE userid = ?"; // 실제 업무에서는 로그인한 id를 ?에 자동으로 입력
+		String sql = "UPDATE member SET password = ?, username = ? WHERE userid = ?"; // 실제 업무에서는 로그인한 id를 ?에 자동으로 입력
 		
 		try {
 			
@@ -424,6 +424,51 @@ public class Main01 {
 		}
 	}
 	
+	// 게시글 수정 메서드
+	public static void contentUpdate() {
+		
+		if(loginId == null) {
+			System.out.println("로그인 해주세요");
+			login();
+		}
+		
+		System.out.print("변경할 제목 입력: ");
+		String title = sc.nextLine();
+		
+		System.out.print("변경할 내용 입력 : ");
+		String content = sc.nextLine();
+	
+		System.out.print("수정할 게시글 번호입력: ");
+		String bno = sc.nextLine();
+		
+		String sql = "UPDATE board SET title = ?, content = ? WHERE bnum = ? and writer = ?";
+		
+		try {
+			
+			Connection conn = DBconnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setString(3, bno);
+			pstmt.setString(4, loginId);
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result == 1) {
+				System.out.println("게시글 수정 성공");
+			} else {
+				System.out.println("게시글이 없는 번호이거나 본인이 작성한 글만 수정 가능합니다");
+			}
+			
+			conn.close();
+			
+		} catch(Exception e) {
+			System.out.println("게시글 수정 실패");
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -435,47 +480,48 @@ public class Main01 {
 		// login(); 로그인 기능
 		// boardWrite();
 		// boardDelete();
+		contentUpdate();
 		 
-		 while(true) {
-			 System.out.println("");
-			 System.out.println("==========JAVA+MySQL 게시판============");
-			 System.out.println("1. 회원가입");
-			 System.out.println("2. 로그인");
-			 System.out.println("3. 회원정보 수정");
-			 System.out.println("4. 회원탈퇴");
-			 System.out.println("5. 모든 회원정보 보기");
-			 System.out.println("6. 게시판 목록");
-			 System.out.println("7. 게시글 내용 보기");
-			 System.out.println("8. 게시글 삭제");
-			 System.out.println("9. 로그아웃");
-			 System.out.println("0. 프로그램 종료");
-			 System.out.println("=====================================");
-			 
-			 System.out.println("메뉴 선택: ");
-			 String menu = sc.nextLine();
-			 
-			 if(menu.equals("1")) {
-				 join();
-			 } else if(menu.equals("2")) {
-				 login();
-			 } else if(menu.equals("3")) {
-				 memberUpdate();
-			 } else if(menu.equals("4")) {
-				 memberDelete();
-			 } else if(menu.equals("5")) {
-				 allMemberInfo();
-			 } else if(menu.equals("6")) {
-				 boardList();
-			 } else if(menu.equals("7")) {
-				 contentView();
-			 } else if(menu.equals("8")) {
-				 boardDelete();
-			 } else if(menu.equals("9")) {
-				 logout();
-			 } else {
-				 System.out.println("잘못 입력된 번호입니다");
-			 }
-		 }
+//		 while(true) {
+//			 System.out.println("");
+//			 System.out.println("==========JAVA+MySQL 게시판============");
+//			 System.out.println("1. 회원가입");
+//			 System.out.println("2. 로그인");
+//			 System.out.println("3. 회원정보 수정");
+//			 System.out.println("4. 회원탈퇴");
+//			 System.out.println("5. 모든 회원정보 보기");
+//			 System.out.println("6. 게시판 목록");
+//			 System.out.println("7. 게시글 내용 보기");
+//			 System.out.println("8. 게시글 삭제");
+//			 System.out.println("9. 로그아웃");
+//			 System.out.println("0. 프로그램 종료");
+//			 System.out.println("=====================================");
+//			 
+//			 System.out.println("메뉴 선택: ");
+//			 String menu = sc.nextLine();
+//			 
+//			 if(menu.equals("1")) {
+//				 join();
+//			 } else if(menu.equals("2")) {
+//				 login();
+//			 } else if(menu.equals("3")) {
+//				 memberUpdate();
+//			 } else if(menu.equals("4")) {
+//				 memberDelete();
+//			 } else if(menu.equals("5")) {
+//				 allMemberInfo();
+//			 } else if(menu.equals("6")) {
+//				 boardList();
+//			 } else if(menu.equals("7")) {
+//				 contentView();
+//			 } else if(menu.equals("8")) {
+//				 boardDelete();
+//			 } else if(menu.equals("9")) {
+//				 logout();
+//			 } else {
+//				 System.out.println("잘못 입력된 번호입니다");
+//			 }
+//		 }
 		 
 	}
 	
