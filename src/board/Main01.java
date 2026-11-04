@@ -347,6 +347,7 @@ public class Main01 {
 	
 	// 게시글 삭제 메서드
 	public static void boardDelete() {
+
 		
 		if(loginId == null) {
 			System.out.println("로그인 해주세요");
@@ -382,6 +383,47 @@ public class Main01 {
 		}
 	}
 	
+	// 게시글 상세 보기 메서드
+	public static void contentView() {
+		
+		System.out.println("게시글 내용 조회 번호: ");
+		int bno = Integer.parseInt(sc.nextLine()); // bno 정수 변환
+		
+		String sql = "SELECT * FROM board WHERE bno = ?";
+		
+		try {
+			Connection conn = DBconnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, bno);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int bnum= rs.getInt("bno"); // 필드 이름을 입력
+				String btitle = rs.getString("title"); 
+				String bcontent= rs.getString("content");
+				String bwriter = rs.getString("writer");
+				String bdate = rs.getString("regdate");
+		
+				System.out.println("");
+				System.out.println("----게시글 내용 보기-----");
+				System.out.println("번호: " + bnum);
+				System.out.println("제목: " + btitle);
+				System.out.println("내용: " + bcontent);
+				System.out.println("작성자: " + bwriter);
+				System.out.println("작성일: " + bdate);
+				System.out.println("---------------------");
+			}
+			
+			rs.close();
+			conn.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -401,11 +443,12 @@ public class Main01 {
 			 System.out.println("2. 로그인");
 			 System.out.println("3. 회원정보 수정");
 			 System.out.println("4. 회원탈퇴");
-			 System.out.println("5. 게시판 목록");
-			 System.out.println("6. 게시글 내용 보기");
-			 System.out.println("7. 게시글 삭제");
-			 System.out.println("8. 로그아웃");
-			 System.out.println("9. 프로그램 종료");
+			 System.out.println("5. 모든 회원정보 보기");
+			 System.out.println("6. 게시판 목록");
+			 System.out.println("7. 게시글 내용 보기");
+			 System.out.println("8. 게시글 삭제");
+			 System.out.println("9. 로그아웃");
+			 System.out.println("0. 프로그램 종료");
 			 System.out.println("=====================================");
 			 
 			 System.out.println("메뉴 선택: ");
@@ -424,11 +467,11 @@ public class Main01 {
 			 } else if(menu.equals("6")) {
 				 boardList();
 			 } else if(menu.equals("7")) {
-				 boardDelete();
+				 contentView();
 			 } else if(menu.equals("8")) {
-				 logout();
+				 boardDelete();
 			 } else if(menu.equals("9")) {
-				 return;
+				 logout();
 			 } else {
 				 System.out.println("잘못 입력된 번호입니다");
 			 }
