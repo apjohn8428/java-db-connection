@@ -469,6 +469,100 @@ public class Main01 {
 		}
 	}
 	
+	// 게시글 개수 출력 메서드
+	public static void countBoard() {
+		
+//		String sql = "SELECT * FROM board";
+//		
+//		try {
+//			
+//			Connection conn = DBconnection.getConnection();
+//			PreparedStatement pstmt = conn.prepareStatement(sql);
+//			
+//			ResultSet rs = pstmt.executeQuery();
+//			
+//			int count = 0;
+//			
+//			while(rs.next()) {
+//				
+//				count++;
+//			}
+//			
+//			System.out.println("총 게시글 수: " + count);
+//			
+//			rs.close();
+//			conn.close();
+//				
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		} 
+		String sql = "SELECT COUNT(*) as total FROM board";
+		
+		try {
+			
+			Connection conn = DBconnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				int count = rs.getInt("total");
+				System.out.println("총 게시글 수: " + count);
+			} else {
+				System.out.println("총 게시글 수: 0");
+			}
+			
+			rs.close();
+			conn.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// 게시판 검색 조회 메서드
+	public static void boardSearch() {
+		
+		// 검색 키워드
+		System.out.print("게시글 검색 키워드: ");
+		String keyword = sc.nextLine();
+		
+		String sql = "SELECT * FROM board WHERE title LIKE ? OR content LIKE ?";
+		
+		try {
+			Connection conn = DBconnection.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, "%"+keyword+"%");
+			pstmt.setString(1, "%"+keyword+"%");
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int bnum= rs.getInt("bnum"); // 필드 이름을 입력
+				String btitle = rs.getString("title"); 
+				String bcontent= rs.getString("content");
+				String bwriter = rs.getString("writer");
+				String bdate = rs.getString("regdate");
+		
+				System.out.println("===================================");
+				System.out.println("번호: " + bnum);
+				System.out.println("제목: " + btitle);
+				System.out.println("내용: " + bcontent);
+				System.out.println("작성자: " + bwriter);
+				System.out.println("작성일: " + bdate);
+			}
+			System.out.println("===================================");
+			
+			rs.close();
+			conn.close();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -480,48 +574,57 @@ public class Main01 {
 		// login(); 로그인 기능
 		// boardWrite();
 		// boardDelete();
-		contentUpdate();
+		// contentUpdate();
 		 
-//		 while(true) {
-//			 System.out.println("");
-//			 System.out.println("==========JAVA+MySQL 게시판============");
-//			 System.out.println("1. 회원가입");
-//			 System.out.println("2. 로그인");
-//			 System.out.println("3. 회원정보 수정");
-//			 System.out.println("4. 회원탈퇴");
-//			 System.out.println("5. 모든 회원정보 보기");
-//			 System.out.println("6. 게시판 목록");
-//			 System.out.println("7. 게시글 내용 보기");
-//			 System.out.println("8. 게시글 삭제");
-//			 System.out.println("9. 로그아웃");
-//			 System.out.println("0. 프로그램 종료");
-//			 System.out.println("=====================================");
-//			 
-//			 System.out.println("메뉴 선택: ");
-//			 String menu = sc.nextLine();
-//			 
-//			 if(menu.equals("1")) {
-//				 join();
-//			 } else if(menu.equals("2")) {
-//				 login();
-//			 } else if(menu.equals("3")) {
-//				 memberUpdate();
-//			 } else if(menu.equals("4")) {
-//				 memberDelete();
-//			 } else if(menu.equals("5")) {
-//				 allMemberInfo();
-//			 } else if(menu.equals("6")) {
-//				 boardList();
-//			 } else if(menu.equals("7")) {
-//				 contentView();
-//			 } else if(menu.equals("8")) {
-//				 boardDelete();
-//			 } else if(menu.equals("9")) {
-//				 logout();
-//			 } else {
-//				 System.out.println("잘못 입력된 번호입니다");
-//			 }
-//		 }
+		 while(true) {
+			 System.out.println("");
+			 System.out.println("==========JAVA+MySQL 게시판============");
+			 System.out.println("1. 회원가입");
+			 System.out.println("2. 로그인");
+			 System.out.println("3. 회원정보 수정");
+			 System.out.println("4. 회원탈퇴");
+			 System.out.println("5. 모든 회원정보 보기");
+			 System.out.println("6. 게시판 목록");
+			 System.out.println("7. 게시글 내용 보기");
+			 System.out.println("8. 게시글 삭제");
+			 System.out.println("9. 로그아웃");
+			 System.out.println("10. 게시글 수정");
+			 System.out.println("11. 게시글 개수 출력");
+			 System.out.println("12. 게시글 검색 조회");
+			 System.out.println("0. 프로그램 종료");
+			 System.out.println("=====================================");
+			 
+			 System.out.println("메뉴 선택: ");
+			 String menu = sc.nextLine();
+			 
+			 if(menu.equals("1")) {
+				 join();
+			 } else if(menu.equals("2")) {
+				 login();
+			 } else if(menu.equals("3")) {
+				 memberUpdate();
+			 } else if(menu.equals("4")) {
+				 memberDelete();
+			 } else if(menu.equals("5")) {
+				 allMemberInfo();
+			 } else if(menu.equals("6")) {
+				 boardList();
+			 } else if(menu.equals("7")) {
+				 contentView();
+			 } else if(menu.equals("8")) {
+				 boardDelete();
+			 } else if(menu.equals("9")) {
+				 logout();
+			 } else if(menu.equals("10")) {
+				 contentUpdate();	 
+			 } else if(menu.equals("11")) {
+				 countBoard();
+			 } else if(menu.equals("12")) {
+				 boardSearch();
+			 } else {
+				 System.out.println("잘못 입력된 번호입니다");
+			 }
+		 }
 		 
 	}
 	
